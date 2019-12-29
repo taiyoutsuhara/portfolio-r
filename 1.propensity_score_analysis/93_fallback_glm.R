@@ -6,7 +6,7 @@ dat4glm = read.fst(batch4glm[ba])
 obj.var.glm = dat4glm$`Q5.CustomerDollar`
 exp.var.glm = dat4glm$`Q4.ServiceType`
 glm4fallback = glm(obj.var.glm ~ . - 1, data = exp.var.glm)
-res.fallback = summary(glm4fallback)
+results_of_fallback = summary(glm4fallback)
 
 # 推定結果の書出し #
 # 逸脱残差
@@ -15,5 +15,8 @@ write.fst(dat4fallback, write4fallback)
 
 
 # 各種係数
-func.extract_coefficients_of_ipwe_or_glm(dat4ipwe, write4coes.fallback[ba])
-func.extract_misc_of_ipwe_or_glm(dat4misc, write4misc.fallback[ba])
+func.extract_coefficients_of_ipwe_or_glm(results_of_fallback,
+                                         write4coes.fallback[ba],
+                                         c(1:length_of_ServiceType),
+                                         levels_of_ServiceType)
+func.extract_misc_of_ipwe_or_glm(results_of_fallback, write4misc.fallback[ba])
