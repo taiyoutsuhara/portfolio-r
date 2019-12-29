@@ -1,0 +1,6 @@
+列番号,列名,列名（システム入力時）
+1,選択番号,Selectable number
+2,F1.年齢,F1.Age
+3,F2.居住都道府県,F2.Region
+4,F3.職業,F3.Occupation
+5,縮退の有無,Fallbacked
