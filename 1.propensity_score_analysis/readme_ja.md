@@ -12,7 +12,7 @@
 
 そこで、本システムでは次の2点を目的とし、課題解決を図る。
 
-1. 一般化傾向スコア分析によるサービス利用効果の予測
+1. 一般化傾向スコア分析によるサービス導入効果の予測
 1. Shiny Dashboardによるサービス比較の容易化
 
 システム設計における工夫点は次の4点である。
@@ -25,7 +25,7 @@
 
 
 ## サンプルデータ
-サービス満足度に関するWebアンケートで、$n = 10,000$件のデータを得たと仮定する。本データの項目は以下のとおりである。
+サービス満足度に関するWebアンケートで、<img src="https://latex.codecogs.com/gif.latex?\&space;n&space;=&space;10,000" title="n = 10,000" />件のデータを得たと仮定する。本データの項目は以下のとおりである。
 ##### 属性
 F1.年齢：20～70歳
 F2.居住都道府県：47都道府県
@@ -49,7 +49,8 @@ Q5.今回の弊サービス利用額：円
 * spec.table_of_available_combinations.csv
 * spec.data_frame_for_ggplot2.csv
 
-フローチャートは最後に掲載している。
+フローチャートは以下の通りである。
+![flowchart](https://raw.githubusercontent.com/taiyoutsuhara/portfolio-r/develop/fix_docs/1.propensity_score_analysis/flowchart.png?raw=true)
 
 ### 01_dataformat.R
 分析用データの整形と、整形済データの属性別分割をする。分割前のデータ構造仕様は"spec.raw_data.csv"のとおりである。
@@ -82,12 +83,13 @@ Q5.今回の弊サービス利用額：円
 1. 上記を除き、1種類以上のサービスを含むか。
 
 ### 02_estimate_gps.R
-「Q4.今回弊サービスで利用したもの」を$\mathbf{z}_{i} \ (i = 1, 2, \cdots, I)$、ダミーデータをそれぞれ$\mathbf{x}_{j} \ (j = 1, 2, \cdots, J)$、一般化傾向スコアを$\mathbf{e}_{i}$とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、$\mathbf{x}_{j}$に代入しない。
-$$
-\mathbf{e}_{i} = \dfrac{\exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{j} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{j}\mathbf{x}_{j})}
-$$
+「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{i}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{i} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{j} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{i}" title="\mathbf{e}_{i}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}" title="\mathbf{x}_{j}" />に代入しない。
 
-推定後、コモンサポート（$\max(\min(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I})) \leq \mathbf{e}_{i} \leq \min(\max(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I}))$）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
+<div align = "center">
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{i}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1}&space;&plus;&space;\exp&space;(\boldsymbol{\alpha}_{j}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{j}\mathbf{x}_{j})}&space;$$" title="$$ \mathbf{e}_{i} = \dfrac{\exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{j} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{j}\mathbf{x}_{j})} $$" />
+</div>
+
+推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))&space;\leq&space;\mathbf{e}_{i}&space;\leq&space;\min(\max(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))" title="\max(\min(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I})) \leq \mathbf{e}_{i} \leq \min(\max(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
 
 確認後、次の4条件を満足すればIPW計算用生データを作成する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～26列目のとおりである。
 1. コモンサポート満足済データの行数が、大元の生データの閾値以上か。
@@ -100,31 +102,34 @@ $$
 * そのほかの場合、データを作成しない。
 
 ### 03_ipw.R
-サービスの種類別件数を$n^{\prime}_{k} (k = 1, 2, \cdots, K)$、IPWを$\mathbf{w}_{i}$とおく。このとき、IPWは次の式により計算できる。
-$$
-\mathbf{w}_{i} = \dfrac{1}{\mathbf{e}_{i}} \times \dfrac{n}{n^{\prime}_{k}}
-$$
+サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{k}&space;(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="n^{\prime}_{k} (k = 1, 2, \cdots, K)" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{i}" title="\mathbf{w}_{i}" />とおく。このとき、IPWは次の式により計算できる。
+
+<div align = "center">
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{i}&space;=&space;\dfrac{1}{\mathbf{e}_{i}}&space;\times&space;\dfrac{n}{n^{\prime}_{k}}&space;$$" title="$$ \mathbf{w}_{i} = \dfrac{1}{\mathbf{e}_{i}} \times \dfrac{n}{n^{\prime}_{k}} $$" />
+</div>
 
 IPWを結合し、IPWE-GLM用データを作成する。このときのデータ構造仕様は
 "spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～27列目のとおりである。
 
 ### 93_fallback_glm.R
-コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果$\boldsymbol{\gamma}_{i}$を推定する。
-$$
-\mathbf{y}_{i} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{i}^{\prime}\mathbf{z}_{i}
-$$
-ここで、$\mathbf{y}_{i}$に「Q5.今回の弊サービス利用額」を代入する。
+コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{i}" title="\boldsymbol{\gamma}_{i}" />を推定する。
+
+<div align = "center">
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{i}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{i}^{\prime}\mathbf{z}_{i}&space;$$" title="$$ \mathbf{y}_{i} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{i}^{\prime}\mathbf{z}_{i} $$" />
+</div>
+
+ここで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{i}" title="\mathbf{y}_{i}" />に「Q5.今回の弊サービス利用額」を代入する。
 
 推定後、IPWE-GLM用データに逸脱残差を結合する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のとおりである。
 
 また、推定結果を"spec.coes_of_ipw-glm.csv"と"spec.misc_of_ipw-glm.csv"のとおり整形してから、書き出す。
 
 ### 04_ipw-glm.R
-サービス導入効果の大きさを表す因果効果$E(\mathbf{y}_{i}) - E(\mathbf{y}_{0})$を、次の一般化線形モデルによって推定する。
-$$
-\mathbf{y}_{i} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{i}\mathbf{z}_{i}) \mathbf{w}_{i},
-\text{where}\ E(\mathbf{y}_{i}) = \boldsymbol{\gamma}_{i}, \ E(\mathbf{y}_{0}) = \boldsymbol{\gamma}_{I}
-$$
+サービス導入効果の大きさを表す因果効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;E(\mathbf{y}_{i})&space;-&space;E(\mathbf{y}_{0})" title="E(\mathbf{y}_{i}) - E(\mathbf{y}_{0})" />を、次の一般化線形モデルによって推定する。
+
+<div align = "center">
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{i}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;(\boldsymbol{\gamma}_{i}\mathbf{z}_{i})&space;\mathbf{w}_{i},&space;\text{where}\&space;E(\mathbf{y}_{i})&space;=&space;\boldsymbol{\gamma}_{i},&space;\&space;E(\mathbf{y}_{0})&space;=&space;\boldsymbol{\gamma}_{I}&space;$$" title="$$ \mathbf{y}_{i} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{i}\mathbf{z}_{i}) \mathbf{w}_{i}, \text{where}\ E(\mathbf{y}_{i}) = \boldsymbol{\gamma}_{i}, \ E(\mathbf{y}_{0}) = \boldsymbol{\gamma}_{I} $$" />
+</div>
 
 推定後のデータ書き出し処理は、"93_fallback_glm.R"と同様である。
 
@@ -135,7 +140,7 @@ Shiny Dashboardによって、因果効果の大小を比較し図化する。�
 * 比較したいサービスを選択するタブパネル。3種類比較できるようにしている。@ 05-1_ui_tabPanel_at_comparison.R
 * タブパネルと選択可能パターン表を表示する。@ 05-1_ui_comparison.R
 * データ分割×グループ別因果効果※をグラフ化する。@ 05-1_ui_ranking.R
-※縮退時はサービス導入効果$\boldsymbol{\gamma}_{i}$
+※縮退時はサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{i}" title="\boldsymbol{\gamma}_{i}" />
 * Shiny Dashboardを描画する。@ 05-1_ui_to_render.R
 
 選択可能パターン表、グラフ描画用データフレームの構造仕様はそれぞれ、
@@ -152,66 +157,3 @@ server関数に入出力データを格納し、UIオブジェクトとserver関
 * 整形データ分割用関数
 * GLM, IPWE-GLMの結果を取り出す関数
 * ggplot2用データフレーム作成関数
-
-### フローチャート
-```flow
-st=>start: ルーチン開始
-e=>end: ルーチン終了
-abend=>end:  |flow-terminal
-
-io1=>inputoutput: 生データ
-io2=>inputoutput: 1-1.整形済データ・
-分割なし/あり
-io3=>inputoutput: 2-1.GPS結合済データ
-・分割なし/あり
-io4=>inputoutput: 3-1.IPW結合済データ
-・分割なし/あり
-io5=>inputoutput: 4-1.逸脱残差結合
-済データ・分割
-なし/あり
-io6=>inputoutput: 4-2.推定結果・
-分割なし/あり
-io7=>inputoutput: 2-2.縮退時GLM用データ
-・分割なし/あり
-io8=>inputoutput: R3-1.逸脱残差結合
-済データ・分割
-なし/あり
-io9=>inputoutput: R3-2.推定結果・
-分割なし/あり
-
-cond1=>condition: 属性別分割済データ
-出力4条件の満足
-cond2=>condition: IPW計算用データ
-出力4条件の満足
-cond3=>condition: 縮退用一般化線形
-モデル（GLM）用
-データ出力3条件
-の満足
-cond4=>condition: 推定結果出力
-cond5=>condition: 推定結果出力
-
-sub1=>subroutine: 1.データ整形と整形済
-データの属性別分割
-sub2=>subroutine: 2.一般化傾向スコア
-（GPS）の推定
-sub3=>subroutine: 3.逆確率重み（IPW）
-の計算
-sub4=>subroutine: 4.GLMでIPW推定量
-（IPWE）を計算
-sub5=>subroutine: R3.縮退時GLMでサービス
-導入効果を推定
-sub6=>subroutine: 5.Shiny Dashboard
-で可視化
-
-st->io1->sub1->cond1->
-cond1(yes)->io2->sub2->cond2->
-cond1(no)->abend
-cond2(yes)->io3->sub3->io4->sub4->cond4->
-cond2(no)->cond3
-cond3(yes)->io7->sub5->cond5->
-cond3(no)->abend
-cond4(yes)->io6->sub6->e
-cond4(no)->io5(right)->
-cond5(yes)->io9->sub6->e
-cond5(no)->io8(right)->
-​```
