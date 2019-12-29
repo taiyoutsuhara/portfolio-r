@@ -1,0 +1,10 @@
+列番号,列名,列名（システム入力時）
+1,お客様ID,CustomerID
+2,F1.年齢,F1.Age
+3,F2.居住都道府県,F2.Region
+4,F3.Occupation,F3.Occupation
+5,Q1.前回の弊サービス利用有無,Q1.HaveEverUsed
+6,Q2.前回の弊サービス利用額,Q2.FormerCustomerDollar
+7,Q3.弊社サービス改善の認知,Q3.Well-known
+8,Q4.今回弊サービスで利用したもの,Q4.ServiceType
+9,Q5.今回の弊サービス利用額,Q5.CustomerDollar

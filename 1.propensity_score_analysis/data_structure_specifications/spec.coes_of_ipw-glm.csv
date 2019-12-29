@@ -1,0 +1,23 @@
+列番号,列名
+1,Estimate
+2,Std. Error
+3,t value
+4,Pr(>|t|)
+5,diff.data_A
+6,diff.data_B
+7,diff.data_C
+8,diff.data_D
+9,diff.data_E
+10,diff.data_F
+11,cov.scaled.dataA
+12,cov.scaled.dataB
+13,cov.scaled.dataC
+14,cov.scaled.dataD
+15,cov.scaled.dataE
+16,cov.scaled.dataF
+17,cov.unscaled.dataA
+18,cov.unscaled.dataB
+19,cov.unscaled.dataC
+20,cov.unscaled.dataD
+21,cov.unscaled.dataE
+22,cov.unscaled.dataF
