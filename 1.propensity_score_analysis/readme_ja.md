@@ -25,7 +25,9 @@
 
 
 ## サンプルデータ
-サービス満足度に関するWebアンケートで、<img src="https://latex.codecogs.com/gif.latex?\&space;n&space;=&space;10,000" title="n = 10,000" />件のデータを得たと仮定する。本データの項目は以下のとおりである。
+サービス満足度に関するWebアンケートで、<img src="https://latex.codecogs.com/gif.latex?\&space;n&space;=&space;10,000" title="n = 10,000" />件のデータを得たと仮定する。この仮想のデータが"demorawdata.csv"である。
+
+本データの項目は以下のとおりである。
 ##### 属性
 F1.年齢：20～70歳  
 F2.居住都道府県：47都道府県  
@@ -80,7 +82,7 @@ Q5.今回の弊サービス利用額：円
 1. カテゴリの列番号が属性のそれに含まれているか。
 1. 分割済データの行数が、整形済データのそれをカテゴリ数で割ったもの以上か。
 1. サービスの種類に「サービスを利用していない。」を表すカテゴリを含むか。
-1. 上記を除き、1種類以上のサービスを含むか。
+1. その他のカテゴリを全て含むか。
 
 ### 02_estimate_gps.R
 「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{i}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{i} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{j} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{i}" title="\mathbf{e}_{i}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}" title="\mathbf{x}_{j}" />に代入しない。
@@ -94,8 +96,8 @@ Q5.今回の弊サービス利用額：円
 確認後、次の4条件を満足すればIPW計算用生データを作成する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～26列目のとおりである。
 1. コモンサポート満足済データの行数が、大元の生データの閾値以上か。
 1. サービスの種類F（サービスを受けていない。）が全サービスの10%以上を占めているか。IPWのインフレーションを回避するため、本制約を適用する。
-1. サービスを利用していない（F）を除き、サービスの種類が1つ以上存在するか。
-1. 条件1を満足しないとき、コモンサポート満足済データ数が1件以上である。
+1. サービスを利用していない（F）を除き、全種類存在するか。
+1. 条件1を満足しないとき、コモンサポート満足済データ数が0ではない。
 
 4条件を満足しないとき、次のように場合分けする。
 * 2, 3, 4番を満足するとき、縮退用一般化線形モデル（GLM）用データを作成する。
