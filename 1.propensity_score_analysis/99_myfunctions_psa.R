@@ -22,7 +22,7 @@ func.make_dummy_from_continuous_data = function(Compared_Object,
 # 1. カテゴリの列番号が属性のそれに含まれているか。
 # 2. 分割済データの行数が、整形済データのそれをカテゴリ数で割ったもの以上か。
 # 3. サービスの種類に「サービスを利用していない。」を表すカテゴリを含むか。
-# 4. 上記を除き、1種類以上のサービスを含むか。
+# 4. その他のカテゴリを全て含むか。
 func.split_rawdata = function(dat_of_n_target,
                               baseline_of_nrow,
                               range_dat_of_n_target,
@@ -37,9 +37,9 @@ func.split_rawdata = function(dat_of_n_target,
     TF_regarding_to_range_dat_of_n_target_in_F3 = (list %in% colnumber_of_F3)
     
     # 条件2
-    TF_regarding_to_nrow_of_spilited_data_in_F1 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F1)
-    TF_regarding_to_nrow_of_spilited_data_in_F2 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F2)
-    TF_regarding_to_nrow_of_spilited_data_in_F3 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F3)
+    TF_regarding_to_nrow_of_split_data_in_F1 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F1)
+    TF_regarding_to_nrow_of_split_data_in_F2 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F2)
+    TF_regarding_to_nrow_of_split_data_in_F3 = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_F3)
     
     # 条件3
     table_of_no_service = table(unique(dat_of_n_target[[list]][, colnumber_of_ServiceType]) %in% service_levels[length_of_ServiceType])
@@ -49,23 +49,23 @@ func.split_rawdata = function(dat_of_n_target,
     # 条件4
     table_of_others = table(unique(dat_of_n_target[[list]][, colnumber_of_ServiceType]) %in% service_levels[-length_of_ServiceType])
     value_of_others = ifelse(length(table_of_others) == 2, table_of_others[names(table_of_no_service) == "TRUE"], 0)
-    TF_regarding_to_ServiceTypes_include_the_others = (value_of_others >= 1)
+    TF_regarding_to_ServiceTypes_include_the_others = (value_of_others == (length_of_service_levels - 1))
     
     # 条件1～4を満足するかどうかで条件分岐
     if(TF_regarding_to_range_dat_of_n_target_in_F1 &
-       TF_regarding_to_nrow_of_spilited_data_in_F1 &
+       TF_regarding_to_nrow_of_split_data_in_F1 &
        TF_regarding_to_ServiceTypes_include_no_service &
        TF_regarding_to_ServiceTypes_include_the_others){
       write.fst(dat_of_n_target[[list]],
                 paste0(dirs.sub.full[1], "/", names(dat_of_n_target)[list], ".fst"))
     }else if(TF_regarding_to_range_dat_of_n_target_in_F2 &
-             TF_regarding_to_nrow_of_spilited_data_in_F2 &
+             TF_regarding_to_nrow_of_split_data_in_F2 &
              TF_regarding_to_ServiceTypes_include_no_service &
              TF_regarding_to_ServiceTypes_include_the_others){
       write.fst(dat_of_n_target[[list]],
                 paste0(dirs.sub.full[1], "/", names(dat_of_n_target)[list], ".fst"))
     }else if(TF_regarding_to_range_dat_of_n_target_in_F3 &
-             TF_regarding_to_nrow_of_spilited_data_in_F3 &
+             TF_regarding_to_nrow_of_split_data_in_F3 &
              TF_regarding_to_ServiceTypes_include_no_service &
              TF_regarding_to_ServiceTypes_include_the_others){
       write.fst(dat_of_n_target[[list]],
@@ -85,7 +85,7 @@ func.split_rawdata_maxcombinations = function(dat_of_n_target,
                                               colnumber_of_ServiceType){
   for(list in range_dat_of_n_target){
     # 条件2
-    TF_regarding_to_nrow_of_spilited_data_in_Fs = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_Fs)
+    TF_regarding_to_nrow_of_split_data_in_Fs = (nrow(dat_of_n_target[[list]]) >=  baseline_of_nrow / length_of_Fs)
     
     # 条件3
     table_of_no_service = table(unique(dat_of_n_target[[list]][, colnumber_of_ServiceType]) %in% service_levels[length_of_ServiceType])
@@ -95,10 +95,10 @@ func.split_rawdata_maxcombinations = function(dat_of_n_target,
     # 条件4
     table_of_others = table(unique(dat_of_n_target[[list]][, colnumber_of_ServiceType]) %in% service_levels[-length_of_ServiceType])
     value_of_others = ifelse(length(table_of_others) == 2, table_of_others[names(table_of_others) == "TRUE"], 0)
-    TF_regarding_to_ServiceTypes_include_the_others = (value_of_others >= 1)
+    TF_regarding_to_ServiceTypes_include_the_others = (value_of_others == (length_of_service_levels - 1))
     
     # 条件2～4を満足するかどうかで条件分岐
-    if(TF_regarding_to_nrow_of_spilited_data_in_Fs &
+    if(TF_regarding_to_nrow_of_split_data_in_Fs &
        TF_regarding_to_ServiceTypes_include_no_service &
        TF_regarding_to_ServiceTypes_include_the_others){
       write.fst(dat_of_n_target[[list]],

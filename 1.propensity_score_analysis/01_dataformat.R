@@ -15,27 +15,27 @@ func.make_dummy_from_continuous_data(dat_of_Age,
 F1.Splits = cbind(F1.Young, F1.Middle, F1.Senior)
 
 # 地方区分
-region_splited = list()
+region_split = list()
 attach(code_of_region)
 for(list_of_region in ran.regions){
-  region_splited[[list_of_region]] = PrefCode[Region %in% levels_of_region[list_of_region, 2]]
-  names(region_splited)[list_of_region] = levels_of_region[list_of_region, 2]
+  region_split[[list_of_region]] = PrefCode[Region %in% levels_of_region[list_of_region, 2]]
+  names(region_split)[list_of_region] = levels_of_region[list_of_region, 2]
 }
 detach(code_of_region)
-`F2.Splits` = lapply(region_splited, function(x){ifelse(dat_of_Region %in% x, YES, NO)})
-names(`F2.Splits`) = paste0("F2.", names(region_splited))
+`F2.Splits` = lapply(region_split, function(x){ifelse(dat_of_Region %in% x, YES, NO)})
+names(`F2.Splits`) = paste0("F2.", names(region_split))
 F2.Splits = as.data.frame(F2.Splits)
 
 # 職業
-occupation_splited = list()
+occupation_split = list()
 attach(code_of_occupation)
 for(list_of_occupation in ran.occupations){
-  occupation_splited[[list_of_occupation]] = Category[Category %in% levels_of_occupation[list_of_occupation]]
-  names(occupation_splited)[list_of_occupation] = descriptions_of_occupation[list_of_occupation]
+  occupation_split[[list_of_occupation]] = Category[Category %in% levels_of_occupation[list_of_occupation]]
+  names(occupation_split)[list_of_occupation] = descriptions_of_occupation[list_of_occupation]
 }
 detach(code_of_occupation)
-`F3.Splits` = lapply(occupation_splited, function(x){ifelse(dat_of_Occupation == x, YES, NO)})
-names(`F3.Splits`) = paste0("F3.", names(occupation_splited))
+`F3.Splits` = lapply(occupation_split, function(x){ifelse(dat_of_Occupation == x, YES, NO)})
+names(`F3.Splits`) = paste0("F3.", names(occupation_split))
 F3.Splits = as.data.frame(F3.Splits)
 
 # (YES, NO) = (1, 2) を (YES, NO) = (1, 0)に振り直す。@ Q1, Q3

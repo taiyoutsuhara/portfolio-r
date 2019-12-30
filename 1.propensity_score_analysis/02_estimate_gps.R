@@ -47,22 +47,22 @@ TF_regarding_to_nrow_of_dat_satisfied_csp = (nrow(dat_satisfied_csp) >= nrow(dat
 TF_ipw_not_inflation =
   length( dat_satisfied_csp$`Q4.ServiceType`[dat_satisfied_csp$`Q4.ServiceType` == levels_of_ServiceType[length_of_ServiceType]] ) >= length(dat_satisfied_csp$`Q4.ServiceType`) * val.th4inflation
 
-# 3.サービスを利用していない（F）を除き、サービスの種類が1つ以上存在するか。
+# 3.サービスを利用していない（F）を除き、全種類存在するか。
 table_of_servicetype = table(levels(unique(dat_satisfied_csp$`Q4.ServiceType`)) %in% levels_of_ServiceType[-length_of_ServiceType])
-value_that_servicetype_includes_at_least_one_of_the_others = ifelse(length(table_of_servicetype) == 2, table_of_servicetype[names(table_of_servicetype) == "TRUE"], 0)
-TF_servicetype_includes_at_least_one_of_the_others = (value_that_servicetype_includes_at_least_one_of_the_others >= 1)
+value_that_servicetype_includes_all_the_others = ifelse(length(table_of_servicetype) == 2, table_of_servicetype[names(table_of_servicetype) == "TRUE"], 0)
+TF_servicetype_includes_all_the_others = (value_that_servicetype_includes_all_the_others == (length_of_ServiceType - 1))
 
-# 4.条件1を満足しないとき、コモンサポート満足済データ数が1件以上である。
-TF_nrow_of_dat_satisfied_csp_is_not_zero = (nrow(dat_satisfied_csp) >= 1)
+# 4.条件1を満足しないとき、コモンサポート満足済データ数が0ではない。
+TF_nrow_of_dat_satisfied_csp_is_not_zero = (nrow(dat_satisfied_csp) > 0)
 
 # 条件1～4を満足するかどうかでデータを書き出すか、書き出さないかを分岐する。
 if(TF_regarding_to_nrow_of_dat_satisfied_csp &
    TF_ipw_not_inflation &
-   TF_servicetype_includes_at_least_one_of_the_others &
+   TF_servicetype_includes_all_the_others &
    TF_nrow_of_dat_satisfied_csp_is_not_zero){
   write.fst(dat_satisfied_csp, write4gps[ba])
 }else if(TF_ipw_not_inflation &
-         TF_servicetype_includes_at_least_one_of_the_others &
+         TF_servicetype_includes_all_the_others &
          TF_nrow_of_dat_satisfied_csp_is_not_zero){
   write.fst(dat_satisfied_csp, write4fallback[ba])
 }else{
