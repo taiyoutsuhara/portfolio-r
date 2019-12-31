@@ -1,9 +1,10 @@
 ## 大元の生データを分析用データに整形 ##
 
 # ダミーデータの作成 #
-# 年齢：分位数により若年、中年、老年に分ける。
+# 年齢：不等式「閾値_(cell) ≦ 年齢 < 閾値_(cell+1)」の閾値に分位数を代入し、
+# 若年、中年、老年に分ける。なお、左端は最年少、右端は最年長に1を加えた値である。
 quantiles_of_age = quantile(dat_of_Age, percentile.age)
-quantiles_of_age = c(min.age, quantiles_of_age[c(2:(length(quantiles_of_age) - 1))], max.age)
+quantiles_of_age = c(min.age, quantiles_of_age[c(2:(length(quantiles_of_age) - 1))], max.age + 1)
 func.make_dummy_from_continuous_data(dat_of_Age,
                                      quantiles_of_age,
                                      ran.age,
