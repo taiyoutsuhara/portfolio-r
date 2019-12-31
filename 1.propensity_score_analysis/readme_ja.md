@@ -85,13 +85,13 @@ Q5.今回の弊サービス利用額：円
 1. その他のカテゴリを全て含むか。
 
 ### 02_estimate_gps.R
-「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{i}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{i} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{j} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{i}" title="\mathbf{e}_{i}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}" title="\mathbf{x}_{j}" />に代入しない。
+各データの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;k(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="k(k = 1, 2, \cdots, K)" />、「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{ik}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{ik} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{jk} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}" title="\mathbf{e}_{ik}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}" title="\mathbf{x}_{jk}" />に代入しない。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{i}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1}&space;&plus;&space;\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}&space;$$" title="$$ \mathbf{e}_{i} = \dfrac{\exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{ik}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\mathbf{1}&space;&plus;&space;\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}&space;$$" title="$$ \mathbf{e}_{ik} = \dfrac{\exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})} $$" />
 </div>
 
-推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))&space;\leq&space;\mathbf{e}_{i}&space;\leq&space;\min(\max(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))" title="\max(\min(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I})) \leq \mathbf{e}_{i} \leq \min(\max(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
+推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))&space;\leq&space;\mathbf{e}_{ik}&space;\leq&space;\min(\max(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))" title="\max(\min(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik})) \leq \mathbf{e}_{ik} \leq \min(\max(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
 
 確認後、次の4条件を満足すればIPW計算用生データを作成する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～26列目のとおりである。
 1. コモンサポート満足済データの行数が、大元の生データの閾値以上か。
@@ -104,33 +104,33 @@ Q5.今回の弊サービス利用額：円
 * そのほかの場合、データを作成しない。
 
 ### 03_ipw.R
-サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{i}" title="n^{\prime}_{i}" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{i}" title="\mathbf{w}_{i}" />とおく。このとき、IPWは次の式により計算できる。
+データ別総件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{k}" title="n^{\prime}_{k}" />、サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{ik}" title="n^{\prime}_{ik}" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{ik}" title="\mathbf{w}_{ik}" />とおく。このとき、IPWは次の式により計算できる。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{i}&space;=&space;\dfrac{1}{\mathbf{e}_{i}}&space;\times&space;\dfrac{n}{n^{\prime}_{i}}&space;$$" title="$$ \mathbf{w}_{i} = \dfrac{1}{\mathbf{e}_{i}} \times \dfrac{n}{n^{\prime}_{i}} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{ik}&space;=&space;\dfrac{1}{\mathbf{e}_{ik}}&space;\times&space;\dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}}&space;$$" title="$$ \mathbf{w}_{ik} = \dfrac{1}{\mathbf{e}_{ik}} \times \dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}} $$" />
 </div>
 
 IPWを結合し、IPWE-GLM用データを作成する。このときのデータ構造仕様は
 "spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～27列目のとおりである。
 
 ### 93_fallback_glm.R
-コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{i}" title="\boldsymbol{\gamma}_{i}" />を推定する。
+コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{ik}" title="\boldsymbol{\gamma}_{ik}" />を推定する。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{i}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{i}^{\prime}\mathbf{z}_{i}&space;$$" title="$$ \mathbf{y}_{i} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{i}^{\prime}\mathbf{z}_{i} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}&space;$$" title="$$ \mathbf{y}_{ik} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik} $$" />
 </div>
 
-ここで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{i}" title="\mathbf{y}_{i}" />に「Q5.今回の弊サービス利用額」を代入する。
+ここで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}" title="\mathbf{y}_{ik}" />に「Q5.今回の弊サービス利用額」を代入する。
 
 推定後、IPWE-GLM用データに逸脱残差を結合する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のとおりである。
 
 また、推定結果を"spec.coes_of_ipw-glm.csv"と"spec.misc_of_ipw-glm.csv"のとおり整形してから、書き出す。
 
 ### 04_ipw-glm.R
-サービス導入効果の大きさを表す因果効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;E(\mathbf{y}_{i})&space;-&space;E(\mathbf{y}_{0})" title="E(\mathbf{y}_{i}) - E(\mathbf{y}_{0})" />を、次の一般化線形モデルによって推定する。
+サービス導入効果の大きさを表す因果効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;E(\mathbf{y}_{ik})&space;-&space;E(\mathbf{y}_{0k})" title="E(\mathbf{y}_{ik}) - E(\mathbf{y}_{0k})" />を、次の一般化線形モデルによって推定する。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{i}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;(\boldsymbol{\gamma}_{i}\mathbf{z}_{i})&space;\mathbf{w}_{i},&space;\text{where}\&space;E(\mathbf{y}_{i})&space;=&space;\boldsymbol{\gamma}_{i},&space;\&space;E(\mathbf{y}_{0})&space;=&space;\boldsymbol{\gamma}_{I}&space;$$" title="$$ \mathbf{y}_{i} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{i}\mathbf{z}_{i}) \mathbf{w}_{i}, \text{where}\ E(\mathbf{y}_{i}) = \boldsymbol{\gamma}_{i}, \ E(\mathbf{y}_{0}) = \boldsymbol{\gamma}_{I} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;(\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik})&space;\mathbf{w}_{ik},&space;\text{where}\&space;E(\mathbf{y}_{ik})&space;=&space;\boldsymbol{\gamma}_{ik},&space;\&space;E(\mathbf{y}_{0k})&space;=&space;\boldsymbol{\gamma}_{Ik}&space;$$" title="$$ \mathbf{y}_{ik} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik}) \mathbf{w}_{ik}, \text{where}\ E(\mathbf{y}_{ik}) = \boldsymbol{\gamma}_{ik}, \ E(\mathbf{y}_{0k}) = \boldsymbol{\gamma}_{Ik} $$" />
 </div>
 
 推定後のデータ書き出し処理は、"93_fallback_glm.R"と同様である。
