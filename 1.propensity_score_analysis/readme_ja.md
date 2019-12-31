@@ -88,7 +88,7 @@ Q5.今回の弊サービス利用額：円
 「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{i}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{i} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{j} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{i}" title="\mathbf{e}_{i}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{j}" title="\mathbf{x}_{j}" />に代入しない。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{i}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1}&space;&plus;&space;\exp&space;(\boldsymbol{\alpha}_{j}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{j}\mathbf{x}_{j})}&space;$$" title="$$ \mathbf{e}_{i} = \dfrac{\exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{j} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{j}\mathbf{x}_{j})} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{i}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1}&space;&plus;&space;\exp&space;(\boldsymbol{\alpha}_{i}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}&space;$$" title="$$ \mathbf{e}_{i} = \dfrac{\exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})}{\mathbf{1} + \exp (\boldsymbol{\alpha}_{i} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{i}^{j}\mathbf{x}_{j})} $$" />
 </div>
 
 推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))&space;\leq&space;\mathbf{e}_{i}&space;\leq&space;\min(\max(\mathbf{e}_{1},&space;\cdots,&space;\mathbf{e}_{I}))" title="\max(\min(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I})) \leq \mathbf{e}_{i} \leq \min(\max(\mathbf{e}_{1}, \cdots, \mathbf{e}_{I}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
@@ -104,10 +104,10 @@ Q5.今回の弊サービス利用額：円
 * そのほかの場合、データを作成しない。
 
 ### 03_ipw.R
-サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{k}&space;(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="n^{\prime}_{k} (k = 1, 2, \cdots, K)" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{i}" title="\mathbf{w}_{i}" />とおく。このとき、IPWは次の式により計算できる。
+サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{i}" title="n^{\prime}_{i}" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{i}" title="\mathbf{w}_{i}" />とおく。このとき、IPWは次の式により計算できる。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{i}&space;=&space;\dfrac{1}{\mathbf{e}_{i}}&space;\times&space;\dfrac{n}{n^{\prime}_{k}}&space;$$" title="$$ \mathbf{w}_{i} = \dfrac{1}{\mathbf{e}_{i}} \times \dfrac{n}{n^{\prime}_{k}} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{i}&space;=&space;\dfrac{1}{\mathbf{e}_{i}}&space;\times&space;\dfrac{n}{n^{\prime}_{i}}&space;$$" title="$$ \mathbf{w}_{i} = \dfrac{1}{\mathbf{e}_{i}} \times \dfrac{n}{n^{\prime}_{i}} $$" />
 </div>
 
 IPWを結合し、IPWE-GLM用データを作成する。このときのデータ構造仕様は
