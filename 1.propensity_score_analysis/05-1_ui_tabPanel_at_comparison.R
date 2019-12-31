@@ -52,7 +52,7 @@ dataframe_to_pick_comparison = cbind(`Selectable number`, dataframe_to_pick_comp
 tabPanel_of_Comparison =
   tabPanel("",
            h4("Input value described in Available Combinations.
-              When zero is input, comparisons are not conducted."),
+              When one is input, comparisons are not conducted."),
            br(),
            fluidRow(
              column(4, style = list("padding-right: 5px;"),
