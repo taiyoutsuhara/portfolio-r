@@ -1,6 +1,7 @@
 ## IPWEの計算 ##
 
-# 利用額を目的変数、サービスの種類を説明変数とする。 #
+# 利用額を目的変数、サービスの種類を説明変数とし、IPWを付与した  #
+# 一般化線形モデルによりIPWEを計算する。なお、切片は推定しない。 #
 dat4ipwe = read.fst(batch4ipwe[ba])
 obj_var_of_ipwe = dat4ipwe$`Q5.CustomerDollar`
 exp_var_of_ipwe = dat4ipwe$`Q4.ServiceType`
@@ -16,7 +17,7 @@ for(ld in range_of_dummy){
 names(dummy_var_of_ipwe) = levels_of_ServiceType
 dummy_var_of_ipwe = as.data.frame(dummy_var_of_ipwe)
 
-# StanでIPWEを計算する。 #
+# Stanの実行 #
 # stanに入力するパラメータとデータを用意する。
 data_for_stan_ipwe = list(N = nrow(dat4ipwe), # データ数
                           M = ncol(dummy_var_of_ipwe), # 説明変数の数
