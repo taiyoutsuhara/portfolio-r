@@ -30,4 +30,4 @@ https://github.com/taiyoutsuhara/portfolio-r/blob/master/1.propensity_score_anal
 
 詳細は下記Markdownにまとめています。
 
-https://github.com/taiyoutsuhara/portfolio-r/blob/master/2.stan_psa/readme_stan.md
+https://github.com/taiyoutsuhara/portfolio-r/blob/master/2.rstan_psa/readme_stan.md
