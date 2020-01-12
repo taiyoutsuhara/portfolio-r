@@ -3,9 +3,9 @@
 # 利用額を目的変数、サービスの種類を説明変数とする一般化線形モデル #
 # によりサービス導入効果を推定する。なお、切片は推定しない。       #
 dat4glm = read.fst(batch4glm[ba])
-obj.var.glm = dat4glm$`Q5.CustomerDollar`
-exp.var.glm = dat4glm$`Q4.ServiceType`
-glm4fallback = glm(obj.var.glm ~ . - 1, data = exp.var.glm)
+obj_var_of_glm = dat4glm$`Q5.CustomerDollar`
+exp_var_of_glm = dat4glm$`Q4.ServiceType`
+glm4fallback = glm(obj_var_of_glm ~ . - 1, data = exp_var_of_glm)
 results_of_fallback = summary(glm4fallback)
 
 # 推定結果の書出し #

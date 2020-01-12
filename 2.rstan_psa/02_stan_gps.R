@@ -1,7 +1,7 @@
 ## GPSの推定 ##
 
-# サービスの種類を目的変数、属性質問を説明変数とする #
-# 多項ロジスティック回帰モデルによりGPSを推定する。  #
+# サービスの種類を目的変数、属性質問を説明変数とする  #
+# 多項ロジスティック回帰モデルによりGPSを推定する。   #
 dat4gps = read.fst(batch4gps[ba])
 
 # 目的変数、説明変数の用意
@@ -25,7 +25,7 @@ inclusion_relation_between_colnames_and_names = colnames(trim_exp_vars_of_gps) %
 complete_exp_vars_of_gps = trim_exp_vars_of_gps[, inclusion_relation_between_colnames_and_names]
 
 
-# StanでGPSを推定する。 #
+# Stanの実行 #
 # stanに入力するパラメータとデータを用意する。
 Intercept = rep(1, nrow(dat4gps)) # 切片用データ
 intercept_and_explanatory_variables = cbind(Intercept, complete_exp_vars_of_gps)

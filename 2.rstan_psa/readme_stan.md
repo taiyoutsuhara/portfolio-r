@@ -35,8 +35,8 @@ Stan実行時のパラメータは次のように設定しており、`fallback_
 * seed = 12345 (seed_number)
 * iter = 2000
 * warmup = 1000
-* chains = 4
 * thin = 2
+* chains = 4
 
 推定が終わったら、推定結果要約（stan_gps_summary_hoge.csv）を書き出す。本要約のデータ構造仕様書はspec.summary_of_gps.csvのとおりである。
 

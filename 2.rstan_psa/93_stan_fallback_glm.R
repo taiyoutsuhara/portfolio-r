@@ -1,6 +1,6 @@
 ## 縮退時、一般化線形モデルによるサービス導入効果の推定 ##
 
-# 利用額を目的変数、サービスの種類を説明変数とする。 #
+# 利用額を目的変数、サービスの種類を説明変数とする一般化線形モデル #
 # によりサービス導入効果を推定する。なお、切片は推定しない。       #
 dat4glm = read.fst(batch4glm[ba])
 obj_var_of_glm = dat4glm$`Q5.CustomerDollar`
@@ -17,7 +17,7 @@ names(dummy_var_of_glm) = levels_of_ServiceType
 dummy_var_of_glm = as.data.frame(dummy_var_of_glm)
 
 
-# Stanで推定する。 #
+# Stanの実行 #
 # stanに入力するパラメータとデータを用意する。
 data_for_stan_glm = list(N = nrow(dat4glm), # データ数
                          M = ncol(exp_var_of_glm), # 説明変数の数

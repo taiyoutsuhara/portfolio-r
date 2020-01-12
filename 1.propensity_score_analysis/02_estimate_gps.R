@@ -31,9 +31,9 @@ dat4csp = cbind(dat4gps, gps)
 
 # コモンサポートを満足するデータのみを採択する。          #
 # 他グループと全く重複しない傾向スコアの除外が目的である。#
-descstat4csp = describeBy(gps, obj_var_of_gps) # to extract min and max at corresponding service
-val_of_min_gps = max(unlist(lapply(descstat4csp, function(x){x$`min`}))) # max of gps_max
-val_of_max_gps = min(unlist(lapply(descstat4csp, function(x){x$`max`}))) # min of gps_min
+descstat4csp = describeBy(gps, obj_var_of_gps)
+val_of_min_gps = max(unlist(lapply(descstat4csp, function(x){x$`min`})))
+val_of_max_gps = min(unlist(lapply(descstat4csp, function(x){x$`max`})))
 TF_of_csp = apply(gps >= val_of_min_gps & gps <= val_of_max_gps, 1, function(x){all(x == rep(T, length_of_ServiceType))})
 dat_satisfied_csp = dat4csp[TF_of_csp, ]
 
