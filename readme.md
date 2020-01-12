@@ -1,5 +1,5 @@
 # R言語による技術の棚卸し #
-成果物（2019/12/29時点）は以下のとおりです。各々の詳細は、該当のMarkdownを参照してください。
+成果物（2020/1/12時点）は以下のとおりです。各々の詳細は、該当のMarkdownを参照してください。
 
 文体を次のように統一しています。
 * 敬体：本ドキュメント
@@ -24,3 +24,10 @@ Rのライブラリで足りないものを、あらかじめインストール�
 詳細は下記Markdownにまとめています。
 
 https://github.com/taiyoutsuhara/portfolio-r/blob/master/1.propensity_score_analysis/readme_ja.md
+
+### 2.rstan_psa
+`1.propensity_score_analysis`の一般化傾向スコア、逆確率重みづけ推定量、ならびにサービス導入効果（縮退時）を、Stanによって推定します。Stanとはベイズ推定によってパラメータを推定するフリーソフトです。
+
+詳細は下記Markdownにまとめています。
+
+https://github.com/taiyoutsuhara/portfolio-r/blob/master/2.stan_psa/readme_stan.md
