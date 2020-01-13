@@ -20,7 +20,7 @@ library(VGAM)
 dir.origin = paste0(getwd(), "/1.propensity_score_analysis/")
 dir.main = paste0(getwd(), "/2.rstan_psa/")
 setwd(dir.main)
-dirs.sub = list("stan_gps", "stan_ipw", "stan_ipw-glm")
+dirs.sub = list("stan_gps", "stan_gps_estimation", "stan_ipw", "stan_ipw-glm")
 
 # 必要なサブディレクトリを作成
 require.dirs.sub = paste0(paste(unlist(dirs.sub), collapse = "$|"), "$")
