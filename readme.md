@@ -21,17 +21,23 @@ Rのライブラリで足りないものを、あらかじめインストール�
 1. 一般化傾向スコア分析によるサービス導入効果の予測
 1. Shiny Dashboardによるサービス比較の容易化
 
-詳細は下記Markdownにまとめています。
-
+詳細は下記Markdownにまとめています。  
 https://github.com/taiyoutsuhara/portfolio-r/blob/master/1.propensity_score_analysis/readme_ja.md
 
 ### 2.rstan_psa
 `1.propensity_score_analysis`の一般化傾向スコア、逆確率重みづけ推定量、ならびにサービス導入効果（縮退時）を、Stanによって推定します。Stanとはベイズ推定によってパラメータを推定するフリーソフトです。
 
-詳細は下記Markdownにまとめています。
-
+詳細は下記Markdownにまとめています。  
 https://github.com/taiyoutsuhara/portfolio-r/blob/master/2.rstan_psa/readme_stan.md
 
 ##### 注意事項
+Stan実行時に並列演算をさせていますが、並列化しない場合、RStanを最新版にアップデートしてください。
+```
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+```
+RStanのアップデート方法は、以下のURLを参照してください。  
+https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started-(Japanese)
+
 Stanによる一般化傾向スコアの推定に、時間が非常にかかります※。また、収束しないことが往々にしてあります。  
 ※PCのスペックに依存しますが、おおよその目安は**最短半日**です。
