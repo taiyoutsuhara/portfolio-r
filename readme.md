@@ -31,3 +31,7 @@ https://github.com/taiyoutsuhara/portfolio-r/blob/master/1.propensity_score_anal
 詳細は下記Markdownにまとめています。
 
 https://github.com/taiyoutsuhara/portfolio-r/blob/master/2.rstan_psa/readme_stan.md
+
+##### 注意事項
+Stanによる一般化傾向スコアの推定に、時間が非常にかかります※。また、収束しないことが往々にしてあります。  
+※PCのスペックに依存しますが、おおよその目安は**最短半日**です。
