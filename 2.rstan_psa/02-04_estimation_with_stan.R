@@ -1,19 +1,31 @@
 ## Stanで一般化傾向スコアと因果効果*を推定する。 * 縮退時はサービス導入効果 ##
 
-# ライブラリ読込み #
+# ライブラリ #
+# 初回時のみ、RStanを除き必要なライブラリをインストールする。
+installed_packages_list = library()
+installed_package_names = list_of_installed_packages$results[, 1] # 1列目にPackage名がある。
+required_packages = c("caret", "data.table", "DT", "fst", "psych", "scales", "shiny",
+                      "shinydashboard", "tidyverse", "VGAM")
+packages_not_installed = required_packages[required_packages %in% installed_package_names == F]
+identical_character_zero = identical(packages_not_installed, character(0))
+if(identical_character_zero){
+  install.packages(packages_not_installed, dependencies = T)
+}
+
+# 読込み
 library(caret)
 library(data.table)
 library(DT)
 library(fst)
 library(psych)
-library(rstan)
-options(mc.cores = parallel::detectCores())
-rstan_options(auto_write = TRUE)
 library(scales)
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(VGAM)
+library(rstan)
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
 
 
 # ディレクトリ設定 #
