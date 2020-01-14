@@ -8,9 +8,9 @@ dataframe_for_ggplot2_at_2nd_Comparison = lapply(ranking_of_ipwe_including_all_z
 dataframe_for_ggplot2_at_3rd_Comparison = lapply(ranking_of_ipwe_including_all_zero, function(x){make_dataframe_for_ggplot2(x, "3rd")})
 
 # 可視化画面 #
-tabItem_Ranking = tabItem(
-  "tab_Ranking",
-  h2("Ranking"),
+tabItem_Visualization = tabItem(
+  "tab_Visualization",
+  h2("Visualization"),
   # Layout for Ranking tab #
   plotOutput("plot",
              dblclick = dblclickOpts(id = "plot_dbl_click")

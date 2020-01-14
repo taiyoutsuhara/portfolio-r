@@ -9,14 +9,14 @@ ui =
         menuItem("Information", icon = icon("info"), tabName = 'tab_Info'),
         menuItem("Ranking", icon = icon("line-chart"),
                  menuSubItem("Comparison", tabName = 'tab_Comparison'),
-                 menuSubItem("Ranking", tabName = 'tab_Ranking'))
+                 menuSubItem("Visualization", tabName = 'tab_Visualization'))
       )
     ),
     dashboardBody(
       tabItems(
         tabItem_Info,
         tabItem_Comparison,
-        tabItem_Ranking
+        tabItem_Visualization
       )
       
     ),
