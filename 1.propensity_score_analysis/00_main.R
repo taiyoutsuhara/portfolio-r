@@ -3,12 +3,12 @@
 # ライブラリ #
 # 初回時のみ、必要なライブラリをインストールする。
 installed_packages_list = library()
-installed_package_names = list_of_installed_packages$results[, 1] # 1列目にPackage名がある。
+installed_package_names = installed_packages_list$results[, 1] # 1列目にPackage名がある。
 required_packages = c("caret", "data.table", "DT", "fst", "psych", "scales", "shiny",
                       "shinydashboard", "tidyverse", "VGAM")
 packages_not_installed = required_packages[required_packages %in% installed_package_names == F]
-identical_character_zero = identical(packages_not_installed, character(0))
-if(identical_character_zero){
+identical_character_not_zero = !identical(packages_not_installed, character(0))
+if(identical_character_not_zero){
   install.packages(packages_not_installed, dependencies = T)
 }
 
