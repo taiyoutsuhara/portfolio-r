@@ -11,7 +11,7 @@ results_of_fallback = summary(glm4fallback)
 # 推定結果の書出し #
 # 逸脱残差
 dat4fallback$deviance.resid = res.fallback$deviance.resid
-write.fst(dat4fallback, write4fallback)
+write.fst(dat4fallback, write4fallback[ba])
 
 
 # 各種係数
