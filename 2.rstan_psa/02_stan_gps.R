@@ -54,6 +54,7 @@ coes_of_gps = summary(stan4gps)
 data_frame_of_coes = as.data.frame(coes_of_gps$summary)
 write.csv(data_frame_of_coes, write4gps_summary[ba], row.names = T, quote = F)
 
+
 # Rhat < 1.05を満足すれば、以下の処理を実行する。 #
 TF_count_of_Rhat = table(na.omit(data_frame_of_coes$Rhat) < 1.05)
 conditional_branching_for_writing =

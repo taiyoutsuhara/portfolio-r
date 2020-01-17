@@ -112,7 +112,7 @@ batch4gps = list.files(subdir.dataformat, full.names = T)
 
 # 出力ファイルリストのサブディレクトリをstan_gpsに指定する。
 subdir.origin = "1.propensity_score_analysis/dataformat/"
-subdir.gps = paste0("2.rstan/", dirs.sub[[1]], "/stan_gps_")
+subdir.gps = paste0("2.rstan_psa/", dirs.sub[[1]], "/stan_gps_")
 write4gps      = gsub(subdir.origin, subdir.gps, batch4gps)
 write4gps_summary     = gsub("stan_gps/stan_gps", "stan_gps_estimation/stan_gps_summary", write4gps)
 write4gps_summary     = gsub(".fst", ".csv", write4gps_summary)
@@ -153,7 +153,7 @@ if(!identical(batch4glm, character(0))){ # 縮退時だけ実行する。
 
 
 # IPW推定量（IPWE）の計算 #
-batch4ipwe = list.files(dirs.sub.full[2], full.names = T)
+batch4ipwe = list.files(dirs.sub.full[3], full.names = T)
 write4ipwe = gsub("stan_ipw/stan_ipw", "stan_ipw-glm/stan_ipw-glm", batch4ipwe)
 write4summary = gsub("fst", "csv", gsub("stan_ipw-glm/stan_ipw-glm", "stan_ipw-glm/stan_summary", write4ipwe) )
 write4coes = gsub("fst", "csv", gsub("stan_ipw-glm/stan_ipw-glm", "stan_ipw-glm/stan_coes", write4ipwe) )
