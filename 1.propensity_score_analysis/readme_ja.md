@@ -51,7 +51,7 @@ Q5.今回の弊サービス利用額：円
 * spec.table_of_available_combinations.csv
 * spec.data_frame_for_ggplot2.csv
 
-フローチャートは以下の通りである。
+フローチャートは以下の通りである。フロートチャート内のプレフィックス"R"は、縮退を意味する。
 ![flowchart](https://raw.githubusercontent.com/taiyoutsuhara/portfolio-r/develop/fix_docs/1.propensity_score_analysis/flowchart.png?raw=true)
 
 ### 01_dataformat.R
@@ -85,7 +85,7 @@ Q5.今回の弊サービス利用額：円
 1. その他のカテゴリを全て含むか。
 
 ### 02_estimate_gps.R
-各データの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;k(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="k(k = 1, 2, \cdots, K)" />、「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{ik}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{ik} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{jk} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}" title="\mathbf{e}_{ik}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。
+各データの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;k(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="k(k = 1, 2, \cdots, K)" />、各サービスの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;i(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="i(i = 1, 2, \cdots, I)" />、共変量（F1ダミー、F2ダミー、F3ダミー、Q1, Q2, Q3）を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{jk} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}" title="\mathbf{e}_{ik}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。
 
 <div align = "center">
 <img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{i=1}^{I}&space;\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}" title="\mathbf{e}_{ik} = \dfrac{\exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{i=1}^{I} \exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}" />
@@ -93,8 +93,8 @@ Q5.今回の弊サービス利用額：円
 
 なお、次の変数は<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}" title="\mathbf{x}_{jk}" />に代入しない。
 * 老年、南日本、その他（他のカテゴリで区別できるため。）
-* 全部0のダミー変数
-* 全部1のダミー変数
+* 全部0の共変量
+* 全部1の共変量（但し、Q2を除く。）
 
 推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))&space;\leq&space;\mathbf{e}_{ik}&space;\leq&space;\min(\max(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))" title="\max(\min(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik})) \leq \mathbf{e}_{ik} \leq \min(\max(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
 
@@ -127,13 +127,11 @@ IPWを結合し、IPWE-GLM用データを作成する。このときのデータ
 * 21列目～27列目
 
 ### 93_fallback_glm.R
-コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />を推定する。
+「Q5.今回の弊サービス利用額」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}" title="\mathbf{y}_{ik}" />、「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{ik}" title="\mathbf{z}_{ik}" />、サービス導入効果を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />とする。コモンサポートを満足するデータが閾値以下のとき、次のGLMによって<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />を推定する。
 
 <div align = "center">
 <img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}" title="\mathbf{y}_{ik} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}" />
 </div>
-
-ここで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}" title="\mathbf{y}_{ik}" />に「Q5.今回の弊サービス利用額」を代入する。
 
 推定後、IPWE-GLM用データに逸脱残差を結合する。このときのデータ構造仕様は、
 "spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のうち次の列を結合したものである。
