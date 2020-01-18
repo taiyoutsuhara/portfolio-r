@@ -18,10 +18,16 @@ regex_for_exp.vars_for_splits = paste(list_of_exception_colnames[[ba]][1], ifels
 regex_for_exp.vars_exception = paste(regex_for_exp.vars_distinguishable, regex_for_exp.vars_for_splits, sep = "|")
 trim_exp_vars_of_gps = exp_vars_of_gps[, grep(regex_for_exp.vars_exception, colnames(exp_vars_of_gps), invert = T)]
 
-# 全部0の説明変数を除外
-check_for_nrow_equal_zero = apply(trim_exp_vars_of_gps, 2, sum)
-names_of_nrow_is_larger_than_zero = names(check_for_nrow_equal_zero[check_for_nrow_equal_zero != 0])
-inclusion_relation_between_colnames_and_names = colnames(trim_exp_vars_of_gps) %in% names_of_nrow_is_larger_than_zero
+# 全部0 or 1の説明変数を除外する。後者はダミー変数のみ。
+# 全部0
+check_that_dummies_equal_zero = apply(trim_exp_vars_of_gps, 2, sum)
+names_of_nrow_are_larger_than_zero = names(check_that_dummies_equal_zero[check_that_dummies_equal_zero != 0])
+# 全部1。但し、ダミー変数のみ。
+check_that_dummies_equal_nrow = check_that_dummies_equal_zero[names(check_that_dummies_equal_zero) != "Q2.FormerCustomerDollar"]
+names_of_nrow_are_less_than_nrow = names(check_that_dummies_equal_nrow[check_that_dummies_equal_nrow != nrow(dat4gps) & check_that_dummies_equal_nrow != 0])
+names_that_nrow_is_larger_than_zero_and_less_than_nrow = unique(c(names_of_nrow_are_larger_than_zero, names_of_nrow_are_less_than_nrow))
+inclusion_relation_between_colnames_and_names = colnames(trim_exp_vars_of_gps) %in% names_that_nrow_is_larger_than_zero_and_less_than_nrow
+# 最終的に採択する説明変数
 complete_exp_vars_of_gps = trim_exp_vars_of_gps[, inclusion_relation_between_colnames_and_names]
 
 
@@ -47,6 +53,7 @@ stan4gps = stan("gps_zero.stan",
 coes_of_gps = summary(stan4gps)
 data_frame_of_coes = as.data.frame(coes_of_gps$summary)
 write.csv(data_frame_of_coes, write4gps_summary[ba], row.names = T, quote = F)
+
 
 # Rhat < 1.05を満足すれば、以下の処理を実行する。 #
 TF_count_of_Rhat = table(na.omit(data_frame_of_coes$Rhat) < 1.05)

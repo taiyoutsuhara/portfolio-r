@@ -1,19 +1,31 @@
 ## Stanで一般化傾向スコアと因果効果*を推定する。 * 縮退時はサービス導入効果 ##
 
-# ライブラリ読込み #
+# ライブラリ #
+# 初回時のみ、RStanを除き必要なライブラリをインストールする。
+installed_packages_list = library()
+installed_package_names = installed_packages_list$results[, 1] # 1列目にPackage名がある。
+required_packages = c("caret", "data.table", "DT", "fst", "psych", "scales", "shiny",
+                      "shinydashboard", "tidyverse", "VGAM")
+packages_not_installed = required_packages[required_packages %in% installed_package_names == F]
+identical_character_not_zero = !identical(packages_not_installed, character(0))
+if(identical_character_not_zero){
+  install.packages(packages_not_installed, dependencies = T)
+}
+
+# 読込み
 library(caret)
 library(data.table)
 library(DT)
 library(fst)
 library(psych)
-library(rstan)
-options(mc.cores = parallel::detectCores())
-rstan_options(auto_write = TRUE)
 library(scales)
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
 library(VGAM)
+library(rstan)
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
 
 
 # ディレクトリ設定 #
@@ -100,7 +112,7 @@ batch4gps = list.files(subdir.dataformat, full.names = T)
 
 # 出力ファイルリストのサブディレクトリをstan_gpsに指定する。
 subdir.origin = "1.propensity_score_analysis/dataformat/"
-subdir.gps = paste0("2.rstan/", dirs.sub[[1]], "/stan_gps_")
+subdir.gps = paste0("2.rstan_psa/", dirs.sub[[1]], "/stan_gps_")
 write4gps      = gsub(subdir.origin, subdir.gps, batch4gps)
 write4gps_summary     = gsub("stan_gps/stan_gps", "stan_gps_estimation/stan_gps_summary", write4gps)
 write4gps_summary     = gsub(".fst", ".csv", write4gps_summary)
@@ -141,7 +153,7 @@ if(!identical(batch4glm, character(0))){ # 縮退時だけ実行する。
 
 
 # IPW推定量（IPWE）の計算 #
-batch4ipwe = list.files(dirs.sub.full[2], full.names = T)
+batch4ipwe = list.files(dirs.sub.full[3], full.names = T)
 write4ipwe = gsub("stan_ipw/stan_ipw", "stan_ipw-glm/stan_ipw-glm", batch4ipwe)
 write4summary = gsub("fst", "csv", gsub("stan_ipw-glm/stan_ipw-glm", "stan_ipw-glm/stan_summary", write4ipwe) )
 write4coes = gsub("fst", "csv", gsub("stan_ipw-glm/stan_ipw-glm", "stan_ipw-glm/stan_coes", write4ipwe) )

@@ -25,7 +25,7 @@
 
 
 ## サンプルデータ
-サービス満足度に関するWebアンケートで、<img src="https://latex.codecogs.com/gif.latex?\&space;n&space;=&space;10,000" title="n = 10,000" />件のデータを得たと仮定する。この仮想のデータが"demorawdata.csv"である。
+サービス満足度に関するWebアンケートで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;n&space;=&space;10,000" title="n = 10,000" />件のデータを得たと仮定する。この仮想のデータが"demorawdata.csv"である。
 
 本データの項目は以下のとおりである。
 ##### 属性
@@ -51,7 +51,7 @@ Q5.今回の弊サービス利用額：円
 * spec.table_of_available_combinations.csv
 * spec.data_frame_for_ggplot2.csv
 
-フローチャートは以下の通りである。
+フローチャートは以下の通りである。フロートチャート内のプレフィックス"R"は、縮退を意味する。
 ![flowchart](https://raw.githubusercontent.com/taiyoutsuhara/portfolio-r/develop/fix_docs/1.propensity_score_analysis/flowchart.png?raw=true)
 
 ### 01_dataformat.R
@@ -85,15 +85,20 @@ Q5.今回の弊サービス利用額：円
 1. その他のカテゴリを全て含むか。
 
 ### 02_estimate_gps.R
-各データの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;k(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="k(k = 1, 2, \cdots, K)" />、「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{ik}&space;\&space;(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="\mathbf{z}_{ik} \ (i = 1, 2, \cdots, I)" />、ダミーデータをそれぞれ<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{jk} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}" title="\mathbf{e}_{ik}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。なお、老年、南日本、その他は他のカテゴリで区別できるので、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}" title="\mathbf{x}_{jk}" />に代入しない。
+各データの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;k(k&space;=&space;1,&space;2,&space;\cdots,&space;K)" title="k(k = 1, 2, \cdots, K)" />、各サービスの識別番号を<img src="https://latex.codecogs.com/gif.latex?\inline&space;i(i&space;=&space;1,&space;2,&space;\cdots,&space;I)" title="i(i = 1, 2, \cdots, I)" />、共変量（F1ダミー、F2ダミー、F3ダミー、Q1, Q2, Q3）を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}&space;\&space;(j&space;=&space;1,&space;2,&space;\cdots,&space;J)" title="\mathbf{x}_{jk} \ (j = 1, 2, \cdots, J)" />、一般化傾向スコアを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}" title="\mathbf{e}_{ik}" />とする。このとき、次の多項ロジスティック回帰モデルにより一般化傾向スコアを推定する。
 
 <div align = "center">
-<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;$$&space;\mathbf{e}_{ik}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{k=1}^{K}&space;\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}&space;$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{e}_{ik}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{k=1}^{K}&space;\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}&space;$$" title="$$ \mathbf{e}_{ik} = \dfrac{\exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{k=1}^{K} \exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})} $$" /></a>
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{e}_{ik}&space;=&space;\dfrac{\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{i=1}^{I}&space;\exp&space;(\boldsymbol{\alpha}_{ik}&space;&plus;&space;\sum_{j&space;=&space;1}^{J}&space;\boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}" title="\mathbf{e}_{ik} = \dfrac{\exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}{\sum_{i=1}^{I} \exp (\boldsymbol{\alpha}_{ik} + \sum_{j = 1}^{J} \boldsymbol{\beta}_{ik}^{j}\mathbf{x}_{jk})}" />
 </div>
+
+なお、次の変数は<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{x}_{jk}" title="\mathbf{x}_{jk}" />に代入しない。
+* 老年、南日本、その他（他のカテゴリで区別できるため。）
+* 全部0の共変量
+* 全部1の共変量（但し、Q2を除く。）
 
 推定後、コモンサポート（<img src="https://latex.codecogs.com/gif.latex?\inline&space;\max(\min(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))&space;\leq&space;\mathbf{e}_{ik}&space;\leq&space;\min(\max(\mathbf{e}_{1k},&space;\cdots,&space;\mathbf{e}_{Ik}))" title="\max(\min(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik})) \leq \mathbf{e}_{ik} \leq \min(\max(\mathbf{e}_{1k}, \cdots, \mathbf{e}_{Ik}))" />）を満足するデータのみを採択する。ここで、コモンサポートとは、一般化傾向スコアが介入群と対照群の両群で重なり合っている領域のことである。本手続きにより、分析データの厳密性を向上させる。
 
-確認後、次の4条件を満足すればIPW計算用生データを作成する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～26列目のとおりである。
+確認後、次の4条件を満足すればIPW計算用生データを作成する。
 1. コモンサポート満足済データの行数が、大元の生データの閾値以上か。
 1. サービスの種類F（サービスを受けていない。）が全サービスの10%以上を占めているか。IPWのインフレーションを回避するため、本制約を適用する。
 1. サービスを利用していない（F）を除き、全種類存在するか。
@@ -103,26 +108,36 @@ Q5.今回の弊サービス利用額：円
 * 2, 3, 4番を満足するとき、縮退用一般化線形モデル（GLM）用データを作成する。
 * そのほかの場合、データを作成しない。
 
+このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のうち次の列を結合したものである。
+* 1列目
+* 2列目～20列目のうち、多項ロジスティック回帰モデルの説明変数に代入したもの
+* 21列目～26列目
+
 ### 03_ipw.R
 データ別総件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{k}" title="n^{\prime}_{k}" />、サービスの種類別件数を<img src="https://latex.codecogs.com/gif.latex?\inline&space;n^{\prime}_{ik}" title="n^{\prime}_{ik}" />、IPWを<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{ik}" title="\mathbf{w}_{ik}" />とおく。このとき、IPWは次の式により計算できる。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{w}_{ik}&space;=&space;\dfrac{1}{\mathbf{e}_{ik}}&space;\times&space;\dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}}&space;$$" title="$$ \mathbf{w}_{ik} = \dfrac{1}{\mathbf{e}_{ik}} \times \dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{w}_{ik}&space;=&space;\dfrac{1}{\mathbf{e}_{ik}}&space;\times&space;\dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}}" title="\mathbf{w}_{ik} = \dfrac{1}{\mathbf{e}_{ik}} \times \dfrac{n^{\prime}_{k}}{n^{\prime}_{ik}}" />
 </div>
 
-IPWを結合し、IPWE-GLM用データを作成する。このときのデータ構造仕様は
-"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"の1～27列目のとおりである。
+IPWを結合し、IPWE-GLM用データを作成する。このときのデータ構造仕様は、
+"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のうち次の列を結合したものである。
+* 1列目
+* 2列目～20列目のうち、多項ロジスティック回帰モデルの説明変数に代入したもの
+* 21列目～27列目
 
 ### 93_fallback_glm.R
-コモンサポートを満足するデータが閾値以下のとき、次のGLMによってサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{ik}" title="\boldsymbol{\gamma}_{ik}" />を推定する。
+「Q5.今回の弊サービス利用額」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}" title="\mathbf{y}_{ik}" />、「Q4.今回弊サービスで利用したもの」を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{z}_{ik}" title="\mathbf{z}_{ik}" />、サービス導入効果を<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />とする。コモンサポートを満足するデータが閾値以下のとき、次のGLMによって<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />を推定する。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}&space;$$" title="$$ \mathbf{y}_{ik} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;\boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}" title="\mathbf{y}_{ik} = \sum_{i = 1}^{I} \boldsymbol{\gamma}_{ik}^{\prime}\mathbf{z}_{ik}" />
 </div>
 
-ここで、<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}" title="\mathbf{y}_{ik}" />に「Q5.今回の弊サービス利用額」を代入する。
-
-推定後、IPWE-GLM用データに逸脱残差を結合する。このときのデータ構造仕様は、"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のとおりである。
+推定後、IPWE-GLM用データに逸脱残差を結合する。このときのデータ構造仕様は、
+"spec.reshaped_data_binding_gps_ipw_and_deviance.resid.csv"のうち次の列を結合したものである。
+* 1列目
+* 2列目～20列目のうち、多項ロジスティック回帰モデルの説明変数に代入したもの
+* 21列目～28列目
 
 また、推定結果を"spec.coes_of_ipw-glm.csv"と"spec.misc_of_ipw-glm.csv"のとおり整形してから、書き出す。
 
@@ -130,7 +145,7 @@ IPWを結合し、IPWE-GLM用データを作成する。このときのデータ
 サービス導入効果の大きさを表す因果効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;E(\mathbf{y}_{ik})&space;-&space;E(\mathbf{y}_{0k})" title="E(\mathbf{y}_{ik}) - E(\mathbf{y}_{0k})" />を、次の一般化線形モデルによって推定する。
 
 <div align = "center">
-<img src="https://latex.codecogs.com/gif.latex?\inline&space;$$&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;(\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik})&space;\mathbf{w}_{ik},&space;\text{where}\&space;E(\mathbf{y}_{ik})&space;=&space;\boldsymbol{\gamma}_{ik},&space;\&space;E(\mathbf{y}_{0k})&space;=&space;\boldsymbol{\gamma}_{Ik}&space;$$" title="$$ \mathbf{y}_{ik} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik}) \mathbf{w}_{ik}, \text{where}\ E(\mathbf{y}_{ik}) = \boldsymbol{\gamma}_{ik}, \ E(\mathbf{y}_{0k}) = \boldsymbol{\gamma}_{Ik} $$" />
+<img src="https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{y}_{ik}&space;=&space;\sum_{i&space;=&space;1}^{I}&space;(\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik})&space;\mathbf{w}_{ik},&space;\text{where}\&space;E(\mathbf{y}_{ik})&space;=&space;\boldsymbol{\gamma}_{ik},&space;\&space;E(\mathbf{y}_{0k})&space;=&space;\boldsymbol{\gamma}_{Ik}" title="\mathbf{y}_{ik} = \sum_{i = 1}^{I} (\boldsymbol{\gamma}_{ik}\mathbf{z}_{ik}) \mathbf{w}_{ik}, \text{where}\ E(\mathbf{y}_{ik}) = \boldsymbol{\gamma}_{ik}, \ E(\mathbf{y}_{0k}) = \boldsymbol{\gamma}_{Ik}" />
 </div>
 
 推定後のデータ書き出し処理は、"93_fallback_glm.R"と同様である。
@@ -139,10 +154,10 @@ IPWを結合し、IPWE-GLM用データを作成する。このときのデータ
 Shiny Dashboardによって、因果効果の大小を比較し図化する。次のパーツによってShiny Dashboardを作成する。
 
 * サービスの種類と概要を表示する。@ 05-1_ui_info.R
-* 比較したいサービスを選択するタブパネル。3種類比較できるようにしている。@ 05-1_ui_tabPanel_at_comparison.R
+* 比較したいサービスを選択するタブパネル。3種類比較できるようにしている。@ 05-1_ui_tabPanel_of_comparison.R
 * タブパネルと選択可能パターン表を表示する。@ 05-1_ui_comparison.R
 * データ分割×グループ別因果効果※をグラフ化する。@ 05-1_ui_ranking.R
-※縮退時はサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma}_{i}" title="\boldsymbol{\gamma}_{i}" />
+※縮退時はサービス導入効果<img src="https://latex.codecogs.com/gif.latex?\inline&space;\boldsymbol{\gamma^{\prime}}_{ik}" title="\boldsymbol{\gamma^{\prime}}_{ik}" />
 * Shiny Dashboardを描画する。@ 05-1_ui_to_render.R
 
 選択可能パターン表、グラフ描画用データフレームの構造仕様はそれぞれ、

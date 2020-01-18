@@ -65,5 +65,5 @@ if(conditional_branching_for_writing){
   # 推定した係数を書き出す。
   stan_coes_of_ipwe = cbind(ipwe_estimation, se_estimation, ipwe_diff)
   colnames(stan_coes_of_ipwe)[c(1:2)] = c("Estimate", "Std. Error")
-  write.csv(stan_coes_of_ipwe, write4coes, row.names = T, quote = F)
+  write.csv(stan_coes_of_ipwe, write4coes[ba], row.names = T, quote = F)
 }

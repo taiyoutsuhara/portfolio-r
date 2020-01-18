@@ -26,9 +26,8 @@ transformed parameters {
 }
 
 model {
-  for (d in 1:D)
-    // normal(mean, SD)のSDに、切片と説明変数の数を代入する。
-    b_raw[d,] ~ normal(0, D);
+  // normal(mean, SD)のSDに、切片と説明変数の数を代入する。
+  to_vector(b_raw') ~ normal(0, D);
   for (n in 1:N)
     Y[n] ~ categorical_logit(mu[n,]');
 }

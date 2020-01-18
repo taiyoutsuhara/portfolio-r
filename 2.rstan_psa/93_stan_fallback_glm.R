@@ -60,5 +60,5 @@ if(TF_count_of_Rhat[names(TF_count_of_Rhat) == "FALSE"] == 0){
   # 推定した係数を書き出す。
   stan_coes_of_glm = cbind(glm_estimation, se_estimation, glm_diff)
   colnames(stan_coes_of_glm)[c(1:2)] = c("Estimate", "Std. Error")
-  write.csv(stan_coes_of_glm, write4coes.fallback, row.names = T, quote = F)
+  write.csv(stan_coes_of_glm, write4coes.fallback[ba], row.names = T, quote = F)
 }
